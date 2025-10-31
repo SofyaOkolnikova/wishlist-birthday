@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="booking-container">
+    <div class="booking-card">
+        <h2>Бронирование подарка</h2>
+        
+        <div class="gift-preview">
+            <img src="{{ gift.image }}" alt="{{ gift.name }}" onerror="this.src='https://via.placeholder.com/300x300?text=Изображение+не+загружено'">
+            <h3>{{ gift.name }}</h3>
+            <a href="{{ gift.url }}" target="_blank">Посмотреть подарок в магазине</a>
+        </div>
+        
+        {% if not gift.reserved_by %}
+        <form method="POST" class="booking-form">
+            <div class="form-group">
+                <label for="name">Твое имя/ваши имена:</label>
+                <input type="text" id="name" name="name" required placeholder="Например, Данил" maxlength="50">
+                <small>Это поможет избежать дублирования подарков</small>
+            </div>
+            <button type="submit" class="confirm-btn">Забронировать этот подарок</button>
+            <a href="{{ url_for('index') }}" class="back-link">Вернуться к вишлисту</a>
+        </form>
+        {% else %}
+        <div class="already-booked">
+            <p>Этот подарок уже забронирован!</p>
+            <a href="{{ url_for('index') }}" class="back-btn">Вернуться к вишлисту</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

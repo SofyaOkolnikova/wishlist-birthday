@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="wishlist-grid">
+        {% for gift in gifts %}
+        <div class="gift-card {% if gift.reserved_by %}booked{% endif %}">
+            <a href="{{ gift.url }}" target="_blank" class="gift-image">
+                <img src="{{ gift.image }}" alt="{{ gift.name }}" onerror="this.src='https://via.placeholder.com/300x300?text=Изображение+не+загружено'">
+                {% if gift.reserved_by %}
+                <div class="booked-badge">🎁 Забронирован</div>
+                {% endif %}
+            </a>
+            
+            <div class="gift-info">
+                <h3>{{ gift.name }}</h3>
+                
+                {% if not gift.reserved_by %}
+                <a href="{{ url_for('book_gift', gift_id=gift.id) }}" class="book-btn">
+                    Забронировать подарок
+                </a>
+                {% else %}
+                <div class="booking-details">
+                    <p class="booked-text">Забронировал(а): <strong>{{ gift.reserved_by }}</strong></p>
+                    <a href="{{ url_for('cancel_booking', gift_id=gift.id) }}" class="cancel-btn" onclick="return confirm('Вы уверены, что хотите отменить бронирование?')">
+                        Отменить бронирование
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
